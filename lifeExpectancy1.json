@@ -1,0 +1,37 @@
+[
+ {
+  "country": "Bangladesh",
+  "Female": 3121.2400000000007,
+  "Male": 3079.1509999999994
+ },
+ {
+  "country": "Bhutan",
+  "Female": 2709.1059999999998,
+  "Male": 2705.8179999999993
+ },
+ {
+  "country": "Cambodia",
+  "Female": 2729.223,
+  "Male": 2481.4060000000004
+ },
+ {
+  "country": "China",
+  "Female": 3663.981999999999,
+  "Male": 3512.6280000000006
+ },
+ {
+  "country": "India",
+  "Female": 3030.455999999999,
+  "Male": 3005.0540000000005
+ },
+ {
+  "country": "Indonesia",
+  "Female": 3369.975,
+  "Male": 3210.1210000000005
+ },
+ {
+  "country": "Myanmar",
+  "Female": 3185.7790000000005,
+  "Male": 2934.1809999999996
+ }
+]
