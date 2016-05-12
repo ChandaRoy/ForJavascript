@@ -25,6 +25,7 @@ body {
 </head>
 <body align="center">
   <script src="http://d3js.org/d3.v3.min.js"></script>
+<<<<<<< HEAD
 <h2> All Assault cases over the given time frame. </h2>
 <h3>aggregated on whether the crime resulted
 
@@ -32,6 +33,13 @@ in an arrest or not</h3>
   <div id="content3"></div>
   <button onclick="location.href='StackedBarChart.html';">Previous</button>
   <button onclick="location.href='PieChart.html';">Next</button>
+=======
+<h2> Multi-series line chart of India over 1960 - 2013</h2>
+<h3>Birth rate and Death Rate crude (per 1,000 people)</h3>
+  <div id="content3"></div>
+  <button onclick="location.href='StackedBarChart.html';">Previous</button>
+  <button onclick="location.href='barChart.html';">Next</button>
+>>>>>>> 6eef47f460a38dceaa3216ef9427560262e4b0fd
 
 
   <script>
@@ -65,12 +73,21 @@ in an arrest or not</h3>
 
 
   //fetching data from json file
+<<<<<<< HEAD
   d3.json("assaults.json", function(error, data) {
     color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
 
     data.forEach(function(d) {
       d.arrest=parseFloat(d.arrest);
       d.noarrest=parseFloat(d.noarrest);
+=======
+  d3.json("BirthAndDeath.json", function(error, data) {
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
+
+    data.forEach(function(d) {
+      d.BirthRate=parseFloat(d.BirthRate);
+      d.DeathRate=parseFloat(d.DeathRate);
+>>>>>>> 6eef47f460a38dceaa3216ef9427560262e4b0fd
     });
 
     var rates = color.domain().map(function(name) {
@@ -101,7 +118,11 @@ in an arrest or not</h3>
     .attr("y", -60).attr("x",-200)
     .style("text-anchor", "end")
     .style("font-size","13px")
+<<<<<<< HEAD
     .text("Number of crimes)");
+=======
+    .text("Rate(in years)");
+>>>>>>> 6eef47f460a38dceaa3216ef9427560262e4b0fd
 
     var rateGroup = svg.selectAll(".rateGroup")
     .data(rates)
