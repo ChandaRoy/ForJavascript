@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="d3.v3.min.js"></script>
+  <style>
+  svg{
+    display:block;
+    margin: auto;
+  }
+path{  fill: none;
+  stroke: #fff;
+}
+  </style>
+</head>
+<body align="center">
+  <h2>Pie chart for the types of crimes in Chicago in the year 2015</h2>
+  <div id="content"></div>
+  <button onclick="location.href='stackedBarChart.html';">Previous</button>
+  <button onclick="location.href='lineChart.html';">Next</button>
+
+  <script>
+var i=0;
+  var height=500,width=800;
+  var arc=d3.svg.arc()
+  .innerRadius(0).outerRadius(200);
+  var pieData=d3.layout.pie()
+  .value(function(d){return d.value;});
+
+  var labelArc = d3.svg.arc()
+      .outerRadius(200 - 40)
+      .innerRadius(200 - 100);
+
+  var color=d3.scale.ordinal().range(["green","yellow","pink","#555"]);
+  var svg=d3.select("#content").append("svg")
+  .attr("height",height).attr("width",width).append("g").attr("transform","translate(250,250)");
+
+  d3.json("typeOfCrime.json",function(error,data){
+    var arcGroup=svg.selectAll("arc")
+    .data(pieData(data))
+    .enter().append("g").attr("class","arc");
+
+    arcGroup.append("path")
+    .attr("d",arc)
+    .style("fill",function(d){return color(d.value);});
+arcGroup.append("text").text(function(d){return d.data.value;}).attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+
+
+
+    var legend = svg.selectAll(".legend")
+    .data(color.domain())
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(-300," + i * 20 + ")"; });
+
+    legend.append("rect")
+    .attr("x", width - 18)
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", color);
+
+    legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9)
+    //.attr("dy", ".35em")
+    .style("text-anchor", "end")
+    .text(function(d,i){return data[i].type;});
+
+
+// var legend=svg.selectAll("legend")
+// .data(function(d){return d;})
+// .enter().append("g").attr("class","legend").attr("transform","translate(300,40)");
+//
+// legend.append("rect").attr("height",20).attr("width",30).style("fill",color);
+  });
+
+
+  </script>
+</body>
+</html>

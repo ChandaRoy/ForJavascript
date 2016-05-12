@@ -1,0 +1,82 @@
+[
+ {
+  "year": "2001",
+  "arrest": 7150,
+  "noarrest": 24233
+ },
+ {
+  "year": "2002",
+  "arrest": 7340,
+  "noarrest": 24181
+ },
+ {
+  "year": "2003",
+  "arrest": 6909,
+  "noarrest": 22568
+ },
+ {
+  "year": "2004",
+  "arrest": 7004,
+  "noarrest": 21846
+ },
+ {
+  "year": "2005",
+  "arrest": 6631,
+  "noarrest": 20435
+ },
+ {
+  "year": "2006",
+  "arrest": 6288,
+  "noarrest": 19657
+ },
+ {
+  "year": "2007",
+  "arrest": 6550,
+  "noarrest": 19764
+ },
+ {
+  "year": "2008",
+  "arrest": 5316,
+  "noarrest": 20131
+ },
+ {
+  "year": "2009",
+  "arrest": 5700,
+  "noarrest": 17161
+ },
+ {
+  "year": "2010",
+  "arrest": 5051,
+  "noarrest": 16484
+ },
+ {
+  "year": "2011",
+  "arrest": 5185,
+  "noarrest": 15225
+ },
+ {
+  "year": "2012",
+  "arrest": 4792,
+  "noarrest": 15105
+ },
+ {
+  "year": "2013",
+  "arrest": 4460,
+  "noarrest": 13511
+ },
+ {
+  "year": "2014",
+  "arrest": 4495,
+  "noarrest": 12400
+ },
+ {
+  "year": "2015",
+  "arrest": 4038,
+  "noarrest": 12989
+ },
+ {
+  "year": "2016",
+  "arrest": 944,
+  "noarrest": 4087
+ }
+]

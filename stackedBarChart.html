@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="d3.v3.min.js"></script>
+  <style>
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+  }
+  svg{
+    display: block;
+    margin: auto;
+  }
+
+
+  </style>
+</head>
+<body align="center">
+<h2>Stacked bar chart  aggregated over the given time frame (2001 - 2016)</h2>
+  <div id="content2"></div>
+  <button onclick="location.href='pieChart.html';">Previous</button>
+  <button onclick="location.href='lineChart.html';">Next</button>
+
+  <script>
+  //setting height,width and margins
+  var margin={top:20,right:20,bottom:90,left:120},
+  width=700-margin.left-margin.right,
+  height=400-margin.top-margin.bottom;
+
+  //setting scales for axes
+  var xAxisScale=d3.scale.ordinal().rangeRoundBands([0,width],.25);
+  var yAxisScale=d3.scale.linear().range([height,0]);
+
+  //scaling the axes
+  var xAxis=d3.svg.axis().scale(xAxisScale).orient("bottom");
+  var yAxis=d3.svg.axis().scale(yAxisScale).orient("left").ticks(10);
+
+  //color domain
+  var color=d3.scale.ordinal().range(["red","blue"]);
+
+  //appending svg
+  var svg=d3.select("#content2").append("svg").attr("height",height+100).attr("width",width).append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  d3.json("crimes.json",function(error,data){
+
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
+    data.forEach(function(d){
+      var y0 = 0;
+      d.crime = color.domain().map(function(nameValue) { return {nameValue: nameValue, y0: y0, y1: y0 += +d[nameValue]}; });
+      d.totalValue = d.crime[d.crime.length - 1].y1;
+
+    });
+    xAxisScale.domain(data.map(function(d) { return d.year; }));
+    yAxisScale.domain([0, d3.max(data, function(d) { return d.totalValue; })]);
+
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -80).attr("x",-150)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Crimes");
+
+    var year = svg.selectAll(".year")
+    .data(data)
+    .enter().append("g")
+    .attr("class", "g")
+    .attr("transform", function(d) { return "translate(" + xAxisScale(d.year) + ",0)"; });
+
+    year.selectAll("rect")
+    .data(function(d) { return d.crime; })
+    .enter().append("rect")
+    .attr("width", xAxisScale.rangeBand())
+    .attr("y", function(d) { return yAxisScale(d.y1); })
+    .attr("height", function(d) { return yAxisScale(d.y0) - yAxisScale(d.y1); })
+    .style("fill", function(d) { return color(d.nameValue); });
+
+    var legend = svg.selectAll(".legend")
+    .data(color.domain().slice().reverse())
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+    .attr("x", width - 18)
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", color);
+
+    legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9)
+    .attr("dy", ".35em")
+    .style("text-anchor", "end")
+    .text(function(d) { return d; });
+
+
+
+
+  });
+
+  </script>
+
+<script>
+  $(document).ready(function(){
+$("svg").onload(function(){
+$(this).hide();
+
+});
+});
+</script>
+
+
+</body>
+</html>

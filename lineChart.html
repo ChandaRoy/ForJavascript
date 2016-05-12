@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+body {
+  font: 8px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+</style>
+</head>
+<body align="center">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+<h2> All Assault cases over the given time frame. </h2>
+<h3>aggregated on whether the crime resulted
+
+in an arrest or not</h3>
+  <div id="content3"></div>
+  <button onclick="location.href='StackedBarChart.html';">Previous</button>
+  <button onclick="location.href='PieChart.html';">Next</button>
+
+
+  <script>
+  var margin={top:20,right:30,bottom:20,left:120},
+  width=1200-margin.left-margin.right,
+  height=500-margin.top-margin.bottom;
+
+
+  //setting scales for both axes
+  var xAxisScale=d3.scale.ordinal().rangeRoundBands([0,width],.05);
+  var yAxisScale=d3.scale.linear().range([height,0]);
+
+  //scaling the axes
+  var xAxis=d3.svg.axis().scale(xAxisScale).orient("bottom");
+  var yAxis=d3.svg.axis().scale(yAxisScale).orient("left").ticks(20);
+
+  //var color = d3.scale.category10();
+  var color = d3.scale.ordinal()
+  .range(["red", "blue"]);
+
+
+  //appending svg to div
+  var svg=d3.select("#content3").append("svg").attr("height",height+margin.top+margin.bottom).attr("width",width+margin.left+margin.right)
+  .append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  //generating path data
+  var line = d3.svg.line()
+  .interpolate("basis")
+  .x(function(d) { return xAxisScale(d.year); })
+  .y(function(d) { return yAxisScale(d.Rate); });
+
+
+  //fetching data from json file
+  d3.json("assaults.json", function(error, data) {
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "year"; }));
+
+    data.forEach(function(d) {
+      d.arrest=parseFloat(d.arrest);
+      d.noarrest=parseFloat(d.noarrest);
+    });
+
+    var rates = color.domain().map(function(name) {
+      return {
+        name: name,
+        values: data.map(function(d){
+          return {year: d.year, Rate: +d[name]};
+        })
+      };
+    });
+
+    //ticks fro the axes
+    xAxisScale.domain(data.map(function(d) { return d.year; }));
+    yAxisScale.domain([0 ,d3.max(rates, function(c) { return d3.max(c.values, function(v) { return v.Rate; }); }) ]);
+
+    //calling axis functions
+    //x-axis
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+    //y-axis
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -60).attr("x",-200)
+    .style("text-anchor", "end")
+    .style("font-size","13px")
+    .text("Number of crimes)");
+
+    var rateGroup = svg.selectAll(".rateGroup")
+    .data(rates)
+    .enter().append("g")
+    .attr("class", "rateGroup");
+
+
+    //apending the generated path to d
+    rateGroup.append("path")
+    .attr("class", "line")
+    .attr("d", function(d) { return line(d.values); })
+    .style("stroke", function(d) { return color(d.name); });
+
+
+    //text for the type of rates
+    rateGroup.append("text")
+    .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+    .attr("transform", function(d) { return "translate(" + xAxisScale(d.value.year) + "," + yAxisScale(d.value.Rate) + ")"; })
+    .attr("x", 3)
+    .attr("dy", ".35em")
+.style("font-size","12px")
+    .text(function(d) { return d.name; });
+  });
+
+
+
+  </script>
+</body>
+</html>
