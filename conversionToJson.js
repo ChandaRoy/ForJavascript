@@ -24,7 +24,7 @@ rl.on('line',function(line){
     //fs.writeFile('crimes.json',JSON.stringify(theft.sort(function(p1, p2) { return p1.year - p2.year; }), null, ' '));
     //fs.writeFile('assaults.json',JSON.stringify(assault.sort(function(p1, p2) { return p1.year - p2.year; }), null, ' '));
     //fs.writeFile('typeOfCrime.json',JSON.stringify(typeOfCrime, null, ' '));
-  });
+  })
 
 
   function headers(line)
